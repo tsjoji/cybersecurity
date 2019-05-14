@@ -1,0 +1,35 @@
+these are my current sources that i used
+ and why i used them 
+
+
+How to set up key agreement protocol- https://sublimerobots.com/2015/01/simple-diffie-hellman-example-python/
+
+How to set up SSl-https://www.electricmonk.nl/log/2018/06/02/ssl-tls-client-certificate-verification-with-python-v3-4-sslcontext/
+
+
+
+
+salted passwords - https://stackoverflow.com/questions/9594125/salt-and-hash-a-password-in-python
+
+server preferences and how the ciphers worked - https://www.programcreek.com/python/example/65033/OpenSSL.SSL.OP_NO_SSLv3
+
+general functions and options - https://docs.python.org/3/library/ssl.html
+
+hwo to open and write to a file - https://www.guru99.com/reading-and-writing-files-in-python.html
+
+to make sure i signed my certificates correctly - http://pankajmalhotra.com/Simple-HTTPS-Server-In-Python-Using-Self-Signed-Certs
+
+examples for how to get my certificates over hostnames - https://www.programcreek.com/python/example/62606/ssl.get_server_certificate
+
+certificate handling - https://docs.python.org/2/library/ssl.html
+
+non secure tcp connection - https://pymotw.com/3/socket/tcp.html
+
+ssl handshake - https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.1.0/com.ibm.mq.doc/sy10660_.htm
+
+how to decode byte to string - https://stackoverflow.com/questions/606191/convert-bytes-to-a-string
+
+more salting examples - https://www.vitoshacademy.com/hashing-passwords-in-python/
+
+
+
