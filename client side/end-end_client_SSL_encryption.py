@@ -18,6 +18,12 @@ context.load_cert_chain(certfile=c_cert, keyfile=c_key)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn = context.wrap_socket(s, server_side=False, server_hostname=hostname)
 conn.connect((addr, port))
-conn.send(b"Hello World, abcd")
+Username = input("Username")
+Password = input("Password")
+data = (Username+ ", "+Password)
+conn.send(data.encode())
+
+
+
 print("Closing connection")
 conn.close()
