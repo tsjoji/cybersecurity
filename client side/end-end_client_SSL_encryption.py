@@ -17,7 +17,10 @@ context.load_cert_chain(certfile=c_cert, keyfile=c_key)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn = context.wrap_socket(s, server_side=False, server_hostname=hostname)
-conn.connect((addr, port))
+try:
+    conn.connect((addr, port))
+except:
+    conn.connect((addr,port+1))
 Username = input("Username")
 Password = input("Password")
 data = (Username+ ", "+Password)
