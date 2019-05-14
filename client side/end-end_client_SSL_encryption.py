@@ -22,8 +22,15 @@ Username = input("Username")
 Password = input("Password")
 data = (Username+ ", "+Password)
 conn.send(data.encode())
-
-
+while 1:
+    buffer = b''
+    data = conn.recv(4096)
+    if data:
+        buffer += data
+    else:
+        # this is going to be the friends list return part
+        break
+    print(buffer)
 
 print("Closing connection")
 conn.close()

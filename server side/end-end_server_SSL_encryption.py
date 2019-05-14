@@ -29,33 +29,36 @@ options.load_cert_chain(certfile=server_cert, keyfile=server_key)
 
 sock = socket.socket()
 sock.bind((addr, port))
-sock.listen(10)
+sock.listen(1)
+newsocket, fromaddr = sock.accept()
+conn = options.wrap_socket(newsocket, server_side=True)
 
 while True:
-    newsocket, fromaddr = sock.accept()
-    conn = options.wrap_socket(newsocket, server_side=True)
     buffer = b''
     try:
-        while True:
-
             data = conn.recv(4096)
             if data:
                 buffer += data
             else:
                 #this is going to be the friends list return part
                 break
-    finally:
-
-        data = buffer.decode("utf-8").split(", ")
-        name= (DB.get(data[0]))[:-1]
-        if name is not None :
-            if check_password(name, data[1]):#correct username is Jorge Teixeira and password is 1234, other correct username is Hello World and password is abcd
-
-                print(b"welcome "+ data[0].encode('utf-8'))
-            else:
-                print("username and password mismatch")
+    except:
+        print('error occured')
+        continue
+    data = buffer.decode("utf-8").split(", ")
+    name= (DB.get(data[0]))[:-1]
+    wrong ="username and password mismatch"
+    right =("welcome "+ data[0])
+    if name is not None :
+        if check_password(name, data[1]):#correct username is Jorge Teixeira and password is 1234, other correct username is Hello World and password is abcd
+            print(b"welcome "+ data[0].encode('utf-8'))
+            conn.send(right.encode())
         else:
-                print("username and password mismatch")
+            conn.send(wrong.encode())
+            print("username and password mismatch")
+    else:
+        conn.send(wrong.encode())
+        print("username and password mismatch")
 
 
 
