@@ -6,7 +6,9 @@ import random
 import string
 import _thread
 
-def client_enters(conn, fromaddr):
+secretkey=-1
+def client_enters(conn, fromaddr,ClientNum):
+    PersonalNum=ClientNum
     buffer = b''
     try:
             data = conn.recv(4096)
@@ -30,8 +32,7 @@ def client_enters(conn, fromaddr):
             Currently_online.append([data[0], session])
             print("current people online")
             print(Currently_online)
-
-            conn.send(session.encode()+right.encode())
+            conn.send(str(ClientNum).encode()+right.encode())
         else:
             conn.send(wrong.encode())
             print("username and password mismatch")
@@ -39,9 +40,70 @@ def client_enters(conn, fromaddr):
         conn.send(wrong.encode())
         print("username and password mismatch")
 
-    while Currently_online!=3:
+    while len(Currently_online)!=2:#spin lock
         a=1+1
+    client_comms(conn,fromaddr,PersonalNum,session)
 
+def client_comms(conn, fromaddr, personalNum,session):
+    starting= (str(personalNum))
+    buffer=b''
+    global message
+    global secretkey
+    global passback
+    passback=0
+    if(personalNum==1):
+        conn.send(starting.encode())
+        try:
+            data = conn.recv(4096)
+            if data:
+                buffer += data
+            else:
+                return
+        except:
+            print('error occured')
+            return
+        secretkey = buffer
+        print(secretkey)
+        while(passback==0):
+            continue
+        conn.send(str(secretkey).encode())
+        buffer = b''
+        try:
+            data = conn.recv(4096)
+            if data:
+                buffer += data
+            else:
+                return
+        except:
+            print('error occured')
+            return
+        message=buffer
+        #print("this is the message")
+        #print(buffer)
+        passback=3
+
+    if(personalNum==2):
+        while(secretkey==-1):
+            continue
+        conn.send(str(secretkey).encode())
+        buffer=b''
+        try:
+            data = conn.recv(4096)
+            if data:
+                buffer += data
+            else:
+                return
+        except:
+            print('error occured')
+            return
+        secretkey=buffer
+        passback=1
+        while(passback==1):
+            continue
+        conn.send(buffer)
+        while(passback!=3):
+            conitinue
+        conn.send(message)
 def check_password(stored_pass, provided_pass):
 
     salt = stored_pass[:64]
@@ -54,6 +116,7 @@ def randomString(stringLength=20):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
+ClientNum=0
 DB = defaultdict(list)
 Currently_online=[]
 Full_friendslist= dict()
@@ -85,7 +148,8 @@ sock.listen(1)
 while True:
     newsocket, fromaddr = sock.accept()
     conn = options.wrap_socket(newsocket, server_side=True)
-    _thread.start_new_thread(client_enters,(conn, fromaddr))
+    ClientNum=ClientNum+1
+    _thread.start_new_thread(client_enters,(conn, fromaddr,ClientNum))
 
 conn.shutdown(socket.SHUT_RDWR)
 conn.close()
