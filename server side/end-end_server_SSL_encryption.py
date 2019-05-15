@@ -9,36 +9,44 @@ import _thread
 secretkey=-1
 def client_enters(conn, fromaddr,ClientNum):
     PersonalNum=ClientNum
-    buffer = b''
-    try:
+
+    failed=0
+    while failed == 0:
+        buffer = b''
+        try:
             data = conn.recv(4096)
             if data:
                 buffer += data
             else:
                 return
-    except:
-        print('error occured')
-        return
-    data = buffer.decode("utf-8").split(", ")
-    name= (DB.get(data[0]))[:-1]
-    wrong ="username and password mismatch"
-    if(len(Currently_online)==0):
-        right =("nobody is currently online")
-    else:
-        right=str(Currently_online)
-    if name is not None:
-        if check_password(name, data[1]):#correct username is Jorge Teixeira and password is 1234, other correct username is Hello World and password is abcd
-            session = randomString()
-            Currently_online.append([data[0], session])
-            print("current people online")
-            print(Currently_online)
-            conn.send(str(ClientNum).encode()+right.encode())
+        except:
+            print('error occured')
+            return
+        data = buffer.decode("utf-8").split(", ")
+        if DB.get(data[0]) != None:
+            name = (DB.get(data[0]))[:-1]
+        else:
+            conn.send(b"error name incorrect please retry")
+            continue
+        wrong = "username and password mismatch"
+        if (len(Currently_online) == 0):
+            right = ("nobody is currently online")
+        else:
+            right = str(Currently_online)
+        if name is not None:
+            if check_password(name, data[1]):  # correct username is Jorge Teixeira and password is 1234, other correct username is Hello World and password is abcd
+                session = randomString()
+                Currently_online.append([data[0], session])
+                print("current people online")
+                print(Currently_online)
+                conn.send(str(ClientNum).encode() + right.encode())
+                failed=1
+            else:
+                conn.send(wrong.encode())
+                print("username and password mismatch")
         else:
             conn.send(wrong.encode())
             print("username and password mismatch")
-    else:
-        conn.send(wrong.encode())
-        print("username and password mismatch")
 
     while len(Currently_online)!=2:#spin lock
         a=1+1

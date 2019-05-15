@@ -56,6 +56,9 @@ def startKeyExchange(buffered):
 
         message="A Plan to Turn New York Into a Capital of Cybersecurity"
         enc=encode(SharedSecret,message)
+        print("this is the unencoded message")
+        print(message)
+        print("this is the encoded message below")
         print(enc)
         conn.send(str(enc).encode())
     else:
@@ -95,6 +98,9 @@ def startKeyExchange(buffered):
                 # this is going to be the friends list return part
                 print("error")
             break
+        print("this is the encoded message")
+        print(buffer.decode())
+        print("this is the decrypted message")
         decode(SharedSecret,buffer.decode())
 
 addr = '127.0.0.1'
@@ -116,11 +122,12 @@ try:
     conn.connect((addr, port))
 except:
     conn.connect((addr,port+1))
-Username = input("Username ")
-Password = input("Password ")
-data = (Username+ ", "+Password)
-conn.send(data.encode())
+
 while 1:
+    Username = input("Username ")
+    Password = input("Password ")
+    data = (Username + ", " + Password)
+    conn.send(data.encode())
     buffer = b''
     data = conn.recv(4096)
     if data:
@@ -129,7 +136,10 @@ while 1:
         # this is going to be the friends list return part
         break
     print(buffer)
-    break
+    if buffer == b'error name incorrect please retry' or buffer == b'username and password mismatch':
+        continue
+    else:
+        break
 startKeyExchange(buffer)
 
 print("Closing connection")

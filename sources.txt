@@ -1,6 +1,11 @@
 these are my current sources that i used
  and why i used them 
 
+How to use simple diffie - https://sublimerobots.com/2015/01/simple-diffie-hellman-example-python/
+
+How to thread in python- https://docs.python.org/2/library/thread.html
+
+How to make random strings- https://pynative.com/python-generate-random-string/
 
 How to set up key agreement protocol- https://sublimerobots.com/2015/01/simple-diffie-hellman-example-python/
 
@@ -30,6 +35,8 @@ ssl handshake - https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.1.0/com.
 how to decode byte to string - https://stackoverflow.com/questions/606191/convert-bytes-to-a-string
 
 more salting examples - https://www.vitoshacademy.com/hashing-passwords-in-python/
+
+examples of how to encode and decode- https://stackoverflow.com/questions/2490334/simple-way-to-encode-a-string-according-to-a-password
 
 
 
